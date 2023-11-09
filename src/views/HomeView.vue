@@ -1,14 +1,13 @@
 <template>
   <main>
     <pre>
-      <button @click="get">Start</button>
+      <button @click="post">Start</button>
     </pre>
   </main>
 </template>
 
 <script>
 import axios from 'axios'
-import { onMounted } from 'vue'
 
 export default {
   setup () {
@@ -16,12 +15,6 @@ export default {
       params: {
         _limit: 5
       }
-    }
-
-    const data = {
-      title: 'foo',
-      body: 'bar',
-      userId: 1
     }
 
     const get = async () => {
@@ -36,6 +29,25 @@ export default {
       // }catch (error) {
       //   throw new Error(error)
       // }
+    }
+
+    const post = async () => {
+      const record = {
+        title: 'foo',
+        body: 'bar',
+        userId: 1
+      }
+      try {
+        const { data } = await axios.post('https://jsonplaceholder.typicode.com/posts', record)
+        return data
+      } catch (error) {
+        throw new Error(error)
+      }
+    }
+
+    return {
+      get,
+      post
     }
   }
 }
