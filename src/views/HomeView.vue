@@ -8,6 +8,7 @@
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue'
 
 export default {
   setup () {
@@ -16,6 +17,12 @@ export default {
         _limit: 5
       }
     }
+    const record = ref({
+      id: 1,
+      title: 'foo',
+      body: 'bar',
+      userId: 1
+    })
 
     const get = async () => {
       try {
@@ -32,22 +39,35 @@ export default {
     }
 
     const post = async () => {
-      const record = {
-        title: 'foo',
-        body: 'bar',
-        userId: 1
-      }
       try {
-        const { data } = await axios.post('https://jsonplaceholder.typicode.com/posts', record)
-        return data
+        const { data } = await axios.post('https://jsonplaceholder.typicode.com/posts', record.value)
       } catch (error) {
+        throw new Error(error)
+      }
+    }
+
+    const put = async () => {
+      try {
+        return await axios.put('https://jsonplaceholder.typicode.com/posts/1', record.value)
+      } catch (error) {
+        throw new Error(error)
+      }
+    }
+
+    const remove = () => {
+      try {
+        const data = axios.delete('https://jsonplaceholder.typicode.com/posts/2')
+      }catch (error) {
         throw new Error(error)
       }
     }
 
     return {
       get,
-      post
+      post,
+      put,
+      remove,
+      record
     }
   }
 }
